@@ -1,4 +1,4 @@
-## hardware/mailserver [![](https://badges.gitter.im/hardware-mailserver/Lobby.svg)](https://gitter.im/hardware-mailserver/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+## hardware/mailserver with schleuder [![](https://badges.gitter.im/hardware-mailserver/Lobby.svg)](https://gitter.im/hardware-mailserver/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Build
 
@@ -26,6 +26,7 @@ hardware/mailserver is a simple and full-featured mail server suite based on ope
 - **NSD** : authoritative DNS server with DNSSEC support
 - **Nginx** : web server with HTTP/2 and TLS 1.3 (DRAFT), statically linked against BoringSSL
 - **SSL** : lets encrypt and self-signed certificates support
+- **Schleuder** : secure Email Lists
 - Supporting multiple virtual domains over MySQL backend
 - Integration tests with Travis CI
 - Automated builds on DockerHub
@@ -424,4 +425,3 @@ docker logs -f mailserver
 - Commit your changes
 - Push your code and open a new pull request
 - Use [issues](https://github.com/hardware/mailserver/issues) for any questions
-

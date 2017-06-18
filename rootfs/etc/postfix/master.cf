@@ -54,6 +54,8 @@ virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
 scache    unix  -       -       -       -       1       scache
+schleuder unix  -       n       n       -       -       pipe
+  flags=DRhu user=schleuder argv=/usr/local/bin/schleuder work ${recipient}
 
 amavis    unix  -       -       -       -       AMAVIS_MAX_SERVERS       smtp
   -o smtp_data_done_timeout=1200

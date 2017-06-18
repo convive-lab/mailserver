@@ -210,3 +210,10 @@ dkim_milter           = inet:localhost:8891
 dmarc_milter          = inet:localhost:8893
 smtpd_milters         = $dkim_milter,$dmarc_milter
 non_smtpd_milters     = $dkim_milter
+
+##########################
+## SCHLEUDER            ##
+##########################
+
+schleuder_destination_recipient_limit = 1
+transport_maps = hash:/etc/postfix/transport_schleuder

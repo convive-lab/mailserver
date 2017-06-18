@@ -313,7 +313,10 @@ fi
 
 # Folders and permissions
 groupadd -g "$VMAILGID" vmail
+groupadd schleuder
 useradd -g vmail -u "$VMAILUID" vmail -d /var/mail
+useradd -g schleuder schleuder -d /etc/schleuder
+
 
 mkdir /var/run/dovecot
 mkdir /var/run/fetchmail
@@ -324,6 +327,7 @@ chmod -R o-rwx /etc/dovecot
 chown -R dovecot:dovecot /var/run/dovecot
 chown -R opendkim:opendkim /var/run/opendkim /etc/opendkim
 chown -R opendmarc:opendmarc /var/run/opendmarc /etc/opendmarc
+chown -R schleuder:schleuder /etc/schleuder
 
 chmod +x /usr/local/bin/*
 
@@ -347,6 +351,34 @@ fi
 chown -R vmail:vmail /var/mail/sieve
 sievec /var/mail/sieve/default.sieve
 
+#schleuder
+
+if  [ ! -e /etc/schleuder/schleuder-private-key.pem ]; then
+  echo "generate keys for schleuder"
+  su - schleuder -c 'rm fingerprint'
+  su - schleuder -c "/usr/local/bin/schleuder cert generate"
+  su - schleuder -c "/usr/local/bin/schleuder cert fingerprint>tmp"
+  su - schleuder -c 'sed -r "s/[^:]*+: //g" tmp >>fingerprint'
+  su - schleuder -c 'rm tmp'
+
+  chown -R schleuder:schleuder /etc/schleuder
+  rm /etc/schleuder/.schleuder-cli/schleuder-cli.yml
+fi
+/usr/local/bin/schleuder install
+if  [ ! -e /etc/schleuder/schleuder-cli-api ]; then
+  echo "generate api key for schleuder"
+  su - schleuder -c "/usr/local/bin/schleuder new_api_key >> /etc/schleuder/schleuder-cli-api"
+  cat /etc/schleuder/schleuder-cli-api
+  rm /etc/schleuder/.schleuder-cli/schleuder-cli.yml
+fi
+if  [ ! /etc/schleuder/.schleuder-cli/schleuder-cli.yml  ]; then
+  echo "generate config for schleuder-cli"
+  su - schleuder -c "touch /etc/schleuder/.schleuder-cli/schleuder-cli.yml"
+  export FINGERPRINT="./fingerprint"
+  su - schleuder -c "printf 'host: localhost\nport: 4443\ntls_fingerprint: $(cat fingerprint)\napi_key: $(cat schleuder-cli-api)'>> /etc/schleuder/.schleuder-cli/schleuder-cli.yml"
+  su - schleuder -c "schleuder-cli lists list"
+fi
+/etc/schleuder/.schleuder-cli/schleuder-cli.yml
 # Supervisor socket
 touch /dev/shm/supervisor.sock
 
