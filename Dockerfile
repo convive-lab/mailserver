@@ -68,9 +68,9 @@ RUN BUILD_DEPS=" \
  && wget -q https://github.com/krallin/tini/releases/download/v$TINI_VER/tini_$TINI_VER.deb \
  && wget -q https://github.com/krallin/tini/releases/download/v$TINI_VER/tini_$TINI_VER.deb.asc \
  && wget -q https://0xacab.org/schleuder/schleuder/raw/master/gems/schleuder-$SCHLEUDER_VER.gem \
- && wget -q https://0xacab.org/schleuder/schleuder/raw/master/gems/schleuder-$SCHLEUDER_VER.gem.sig
+ && wget -q https://0xacab.org/schleuder/schleuder/raw/master/gems/schleuder-$SCHLEUDER_VER.gem.sig \
  && wget -q https://0xacab.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-$SCHLEUDER_CLI_VER.gem \
- && wget -q https://0xacab.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-$SCHLEUDER_CLI_VER.gem.sig
+ && wget -q https://0xacab.org/schleuder/schleuder-cli/raw/master/gems/schleuder-cli-$SCHLEUDER_CLI_VER.gem.sig \
  && echo "Verifying both integrity and authenticity of tini_${TINI_VER}.deb..." \
  && CHECKSUM=$(sha256sum tini_${TINI_VER}.deb | awk '{print $1}') \
  && if [ "${CHECKSUM}" != "${TINI_SHA256_HASH}" ]; then echo "Warning! tini_${TINI_VER}.deb checksum does not match!" && exit 1; fi \
@@ -83,8 +83,8 @@ RUN BUILD_DEPS=" \
  && dpkg -i tini_$TINI_VER.deb \
  && echo "Verifying both authenticity of schleuder..." \
  && gpg --recv-keys ${SCHLEUDER_GPG_ID} \
- && gpg --verify schleuder-$SCHLEUDER_VER.gem.sig
- && gpg --verify schleuder-cli-$SCHLEUDER_CLI_VER.gem.sig
+ && gpg --verify schleuder-$SCHLEUDER_VER.gem.sig \
+ && gpg --verify schleuder-cli-$SCHLEUDER_CLI_VER.gem.sig  \
  && gem install \
     rake \
     activerecord \
