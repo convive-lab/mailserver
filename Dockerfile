@@ -1,4 +1,4 @@
-FROM debian:jessie-slim
+FROM debian:stretch-slim
 
 LABEL description "Simple and full-featured mail server using Docker" \
       maintainer="Convive <info@convive.io>"
@@ -63,7 +63,11 @@ RUN BUILD_DEPS=" \
     libsqlite3-dev \
     libssl-dev \
     build-essential\
- && pip install envtpl \
+    rubygems \
+    python-setuptools
+ RUN pip install wheel \
+ && pip install envtpl
+ RUN apt install dirmngr \
  && cd /tmp \
  && wget -q https://github.com/krallin/tini/releases/download/v$TINI_VER/tini_$TINI_VER.deb \
  && wget -q https://github.com/krallin/tini/releases/download/v$TINI_VER/tini_$TINI_VER.deb.asc \
@@ -96,7 +100,7 @@ RUN BUILD_DEPS=" \
     sinatra-contrib \
     thor \
  && gem install ./schleuder-$SCHLEUDER_VER.gem \
- && gem install ./schleuder-$SCHLEUDER_CLI_VER.gem \
+ && gem install ./schleuder-cli-$SCHLEUDER_CLI_VER.gem \
  && apt-get purge -y ${BUILD_DEPS} \
  && apt-get autoremove -y \
  && apt-get clean \
