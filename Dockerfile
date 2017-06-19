@@ -86,7 +86,7 @@ RUN BUILD_DEPS=" \
  && echo "All seems good, now unpacking tini_${TINI_VER}.deb..." \
  && dpkg -i tini_$TINI_VER.deb \
  && echo "Verifying both authenticity of schleuder..." \
- && gpg --recv-keys ${SCHLEUDER_GPG_ID} \
+ && gpg --keyserver keys.gnupg.net --recv-keys ${SCHLEUDER_GPG_ID} \
  && gpg --verify schleuder-$SCHLEUDER_VER.gem.sig \
  && gpg --verify schleuder-cli-$SCHLEUDER_CLI_VER.gem.sig  \
  && gem install \
